@@ -1,0 +1,111 @@
+* Appearance
+
+** Hide window decorations
+
+I don't like how the default GNOME window decorations look with emacs,
+so I disable them.
+
+#+begin_src emacs-lisp
+(setq default-frame-alist '((undecorated . t)))
+#+end_src
+
+I also have to inable the internal border to make the window resizeable
+without the decorations.
+
+#+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(drag-internal-border . 1))
+(add-to-list 'default-frame-alist '(internal-border-width . 5))
+#+end_src
+
+** Configure Emacs theme and font
+
+#+begin_src emacs-lisp
+;; Everforest theme
+(setq doom-theme 'doom-everforest)
+(setq doom-everforest-background "medium")
+
+;; IBM Plex Mono with extra symbols 󰋇 󰇳 󰋇 
+(setq doom-font (font-spec :family "BlexMono Nerd Font" :size 16))
+#+end_src
+
+* Editing experience
+
+** Relative line numbers
+
+Relative line numbers allow to quickly jump to a desired line by typing a number
+before pressing j/k (up/down).
+
+#+begin_src emacs-lisp
+(setq display-line-numbers-type 'relative)
+#+end_src
+
+** Key bindings
+
+*** Comment lines
+
+Add a binding to comment lines. =C-/= is not really a vim-style binding,
+but it is used by VSCode so I got used to it.
+
+#+begin_src emacs-lisp
+(map! "C-/" #'evilnc-comment-or-uncomment-lines)
+#+end_src
+
+*** Save file
+
+The default binding for file saving (=SPC f s=) is very annoying to press on
+Colemak (i use colemak btw). I remap it to =SPC s=, which is much quicker.
+
+=SPC s= is already binded to the /"search"/ map, so I rebind it to =SPC l=
+(where "l" stands for "locate")
+
+#+begin_src emacs-lisp
+(map! :leader
+      "s" #'save-buffer
+      "l" doom-leader-search-map)
+#+end_src
+
+* Package configuration
+
+** Languages
+
+*** Markdown
+
+*Grip* is a package used for previewing Markdown documents. It supports
+previewing within Emacs via WebKit, however, that option is broken on
+Wayland and causes Emacs to crash. I disable it to open the preview in my
+default browser instead.
+
+#+begin_src emacs-lisp
+(use-package! grip-mode
+  :defer t
+  :custom
+  (grip-preview-use-webkit nil))
+#+end_src
+
+** Magit
+
+Doom emacs comes with a lot of key bindings by default, but for some reason
+it doesn't set any binding for ~git push~, which is an action that is
+performed very often.
+
+#+begin_src emacs-lisp
+(use-package! magit
+  :defer t
+  :config
+  (map! :map 'doom-leader-git-map
+        "p" #'magit-push-current-to-upstream))
+#+end_src
+
+** Evil Motion Trainer
+
+This is a package that forces you to use more advanced vim motions instead of
+just spamming j/k. At least, it's what it's /supposed/ to do. Most of the time I just
+ignore it. But maybe one day I'll actually learn to use vim motions properly
+because of this package. Maybe.
+
+#+begin_src emacs-lisp
+(use-package! evil-motion-trainer
+  :defer t
+  :config
+  (global-evil-motion-trainer-mode 1))
+#+end_src
