@@ -64,6 +64,29 @@ Colemak (i use colemak btw). I remap it to =SPC s=, which is much quicker.
       "l" doom-leader-search-map)
 #+end_src
 
+** Quick temporary directories
+
+I utilize temporary directories inside of =/tmp= very often when I want to test
+something. In my fish shell config, I have an abbreviation that expands to ~cd (mktemp -d)~ -
+it creates a random tmp directory and puts me into it. This function does the same
+thing, but in Emacs.
+
+#+begin_src emacs-lisp
+(defun temp-dir ()
+  "Open a new temporary directory"
+  (interactive)
+  (dired (make-temp-file "emacs." t))
+  (call-interactively #'find-file))
+#+end_src
+
+The =SPC f= prefix is used for file-related commands in Doom Emacs, and the =t= key
+is not used by anything there, so "t" stands for "tmp" now.
+
+#+begin_src emacs-lisp
+(map! :map 'doom-leader-file-map
+      "t" #'temp-dir)
+#+end_src
+
 * Package configuration
 
 ** Languages

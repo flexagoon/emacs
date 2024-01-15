@@ -18,6 +18,15 @@
       "s" #'save-buffer
       "l" doom-leader-search-map)
 
+(defun temp-dir ()
+  "Open a new temporary directory"
+  (interactive)
+  (dired (make-temp-file "emacs." t))
+  (call-interactively #'find-file))
+
+(map! :map 'doom-leader-file-map
+      "t" #'temp-dir)
+
 (use-package! grip-mode
   :defer t
   :custom
