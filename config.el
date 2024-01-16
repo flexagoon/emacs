@@ -34,6 +34,7 @@
 (after! python
   (setq
    lsp-pylsp-plugins-flake8-enabled nil
+   lsp-pylsp-plugins-pydocstyle-enabled nil
    lsp-pylsp-plugins-pylint-enabled t
    lsp-pylsp-plugins-pylint-args ["--init-hook='import pylint_venv; pylint_venv.inithook()'"
                                   "--max-line-length=88"
