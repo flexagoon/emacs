@@ -93,18 +93,7 @@ is not used by anything there, so "t" stands for "tmp" now.
 
 *** Python
 
-Configure Pyright to use strict typechecking mode, because I prefer to use
-very strict linting defaut with optional rule blacklists, not the other way
-around.
-
-#+begin_src emacs-lisp
-(use-package! lsp-pyright
-  :defer t
-  :custom
-  (lsp-pyright-typechecking-mode "strict"))
-#+end_src
-
-I manage my Python project dependencies with Poetry, so I set a shortcut to
+I manage my Python project dependencies with [[https://python-poetry.org/][Poetry]], so I set a shortcut to
 be able to quickly open the poetry menu.
 
 #+begin_src emacs-lisp
@@ -113,10 +102,23 @@ be able to quickly open the poetry menu.
       ("p" #'poetry))
 #+end_src
 
-**** TODO Fix poetry cache-dir venv support with pyright
-pyright-lsp only detects venvs inside of the current project directory,
-but poetry creates them in =~/.cache= by default. I need to add some sort
-of a workaround to support this.
+Use =pylint= for error checking and configure it to report all possible errors,
+because I prefer to use very strict linting defauts with optional rule blacklists,
+not the other way around.
+
+This also configures the ~pylint_venv~ hook to make pylint detect dependencies
+inside of Poetry virtual environments.
+
+#+begin_src emacs-lisp
+(after! python
+  (setq
+   lsp-pylsp-plugins-flake8-enabled nil
+   lsp-pylsp-plugins-pylint-enabled t
+   lsp-pylsp-plugins-pylint-args ["--init-hook='import pylint_venv; pylint_venv.inithook()'"
+                                  "--max-line-length=88"
+                                  "--enable=all"
+                                  "--enable-all-extensions"]))
+#+end_src
 
 *** Markdown
 

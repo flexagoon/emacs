@@ -27,14 +27,18 @@
 (map! :map 'doom-leader-file-map
       "t" #'temp-dir)
 
-(use-package! lsp-pyright
-  :defer t
-  :custom
-  (lsp-pyright-typechecking-mode "strict"))
-
 (map! :localleader
       :mode 'python-mode
       ("p" #'poetry))
+
+(after! python
+  (setq
+   lsp-pylsp-plugins-flake8-enabled nil
+   lsp-pylsp-plugins-pylint-enabled t
+   lsp-pylsp-plugins-pylint-args ["--init-hook='import pylint_venv; pylint_venv.inithook()'"
+                                  "--max-line-length=88"
+                                  "--enable=all"
+                                  "--enable-all-extensions"]))
 
 (use-package! grip-mode
   :defer t
