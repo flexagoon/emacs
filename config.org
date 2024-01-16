@@ -91,6 +91,33 @@ is not used by anything there, so "t" stands for "tmp" now.
 
 ** Languages
 
+*** Python
+
+Configure Pyright to use strict typechecking mode, because I prefer to use
+very strict linting defaut with optional rule blacklists, not the other way
+around.
+
+#+begin_src emacs-lisp
+(use-package! lsp-pyright
+  :defer t
+  :custom
+  (lsp-pyright-typechecking-mode "strict"))
+#+end_src
+
+I manage my Python project dependencies with Poetry, so I set a shortcut to
+be able to quickly open the poetry menu.
+
+#+begin_src emacs-lisp
+(map! :localleader
+      :mode 'python-mode
+      ("p" #'poetry))
+#+end_src
+
+**** TODO Fix poetry cache-dir venv support with pyright
+pyright-lsp only detects venvs inside of the current project directory,
+but poetry creates them in =~/.cache= by default. I need to add some sort
+of a workaround to support this.
+
 *** Markdown
 
 *Grip* is a package used for previewing Markdown documents. It supports

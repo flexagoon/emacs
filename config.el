@@ -27,6 +27,15 @@
 (map! :map 'doom-leader-file-map
       "t" #'temp-dir)
 
+(use-package! lsp-pyright
+  :defer t
+  :custom
+  (lsp-pyright-typechecking-mode "strict"))
+
+(map! :localleader
+      :mode 'python-mode
+      ("p" #'poetry))
+
 (use-package! grip-mode
   :defer t
   :custom
